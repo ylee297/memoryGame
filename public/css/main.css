@@ -1,0 +1,16 @@
+#homePage {
+    text-align: center;
+}
+footer {
+    text-align: center;
+}
+#gameScene {
+    display:flex;
+    flex-direction: column;
+}
+h1 {
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}

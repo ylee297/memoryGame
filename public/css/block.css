@@ -1,0 +1,43 @@
+
+.game-board {
+    display: grid;
+    grid-template-rows: repeat(5,50px);
+    grid-template-columns: repeat(5,50px);
+    border-style: solid;
+    border-color: grey;
+    padding: 0px; 
+    margin: 0 auto;
+}
+.rotation {
+    /* transition-property: transform; */
+    transform : rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transition-duration: 0.5s;
+    overflow: hidden;
+}
+
+.box {
+    margin:2px;
+    transition: transform 0.3s;
+    transform-style: preserve-3d;
+}
+.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.front{
+    background-color: #bbb;
+}
+.back{
+    background-color: orangered;
+    transform: rotateY( 180deg );
+}
+
+.back, .front{
+    position: absolute;
+    backface-visibility: hidden;
+    width:100%;
+    height:100%;
+}
+
+
