@@ -1,8 +1,16 @@
 
+let gameStart = false;
+let answer;
+let level = 1;
+let totalScore = 0;
+let scoreYouGot = 0;
+let numberOfChoice = 6;
+let round = 1;
+
 function randomNumberGenerator(){
     let ranArray = []
-    while(ranArray.length != 5){
-        let ranNum = Math.floor(Math.random() * 25);
+    while(ranArray.length != (5+level)){
+        let ranNum = Math.floor(Math.random() * Math.pow(4+level,2));
         if(!(ranArray.indexOf(ranNum)>-1)){
             ranArray.push(ranNum);
         }
@@ -11,35 +19,37 @@ function randomNumberGenerator(){
     return ranArray;
 }
 
-function showBlocks(){
-    let random = randomNumberGenerator();
+async function showBlocks(){
+    answer = randomNumberGenerator();
     let blocks = document.getElementsByClassName('box');
 
-    for(let i = 0; i < random.length; i++){
-        blocks[random[i]].children[1].style.backgroundColor = '#37A8E8';
-        flip(random[i]);
+    for(let i = 0; i < answer.length; i++){
+        blocks[answer[i]].children[1].style.backgroundColor = '#37A8E8';
+        flip(answer[i]);
     }
     setTimeout( () => {
-        for(let i = 0; i < random.length; i++){
-            flip(random[i]);
+        for(let i = 0; i < answer.length; i++){
+            flip(answer[i]);
         }
     }, 3000)
 
-    setTimeout( () => {
+    await setTimeout( () => {
         rotation();
     }, 3500)
+
+    setTimeout(enableChoose, 3600);
+    
 }
 
 function boxLocate(){
     let board = document.getElementById("game-board");
-    for(let i = 0; i < 25; i++){
+    for(let i = 0; i < Math.pow(4+level,2); i++){
         let box = document.createElement("div"); 
-        box.className = "box";
-        box.setAttribute("onclick","flip("+ i +");");
+        box.classList.add("box");
         let front = document.createElement("div"); 
-        front.className = "front";
+        front.classList.add("front");
         let back = document.createElement("div"); 
-        back.className = "back"
+        back.classList.add("back");
         box.appendChild(front);
         box.appendChild(back);
         board.appendChild(box);
@@ -55,15 +65,134 @@ function flip(index){
     }
 }
 
+function choose(index){
+    if(gameStart){
+        if(answer.indexOf(index) > -1){
+            totalScore++;
+            scoreYouGot++;
+        } else {
+            totalScore--;
+        }
+        if(totalScore < 0){
+            window.location.href="/"
+            // alert('You are loser')
+            // const url = '/game/end'
+            // const setting = {
+            //     method: 'GET',
+            // };
+            // fetch(url, setting);
+            return;
+        }
+
+        document.getElementById('score').textContent = totalScore;
+        flip(index);
+
+        numberOfChoice--;
+        console.log(numberOfChoice);
+        if(numberOfChoice == 0){
+            disableChoose();
+            setTimeout(nextGame,1000);
+        }
+    }
+}
+
 function rotation(){
     let board = document.getElementById("game-board");
     board.classList.add("rotation");
 }
 
 function newGame(){
+    gameStart = true;
+    reset()
+    score = 0;
+    level = 1;
+    let gameBoard = document.getElementById('game-board');
+    gameBoard.classList.remove('rotation');
+
+    //set the size of updated blocks
+    gameBoard.style.gridTemplateColumns = "repeat("+(level + 4)+",50px)"; 
+    gameBoard.style.gridTemplateRows = "repeat("+(level + 4)+",50px)";
+
+    var child = gameBoard.lastElementChild;  
+    while (child) { 
+        gameBoard.removeChild(child); 
+        child = gameBoard.lastElementChild; 
+    }
+    boxLocate();
     setTimeout(showBlocks,500);
     setTimeout(rotation,5000);
 }
 
+function nextGame(){
+    round++;
+    if(scoreYouGot == level + 5){
+        level++;
+    } else {
+        level--;
+    }
+    document.getElementById('level').textContent = level;
+    document.getElementById('round').textContent = round;
+
+
+    reset();
+    let gameBoard = document.getElementById('game-board');
+
+    gameBoard.classList.remove('rotation');
+    var child = gameBoard.lastElementChild;  
+    while (child) { 
+        gameBoard.removeChild(child); 
+        child = gameBoard.lastElementChild; 
+    } 
+    //set the size of updated blocks
+    // gameBoard.classList.add("levelTwo");
+    
+    gameBoard.style.gridTemplateRows = "repeat(" + (level + 4) + ", 50px)";
+    gameBoard.style.gridTemplateColumns = "repeat(" + (level + 4) + ", 50px)";
+
+    boxLocate();
+    setTimeout(showBlocks,500);
+    setTimeout(rotation,5000);
+}
+
+//reset values which is used in one game temporary
+function reset(){
+    answer = null;
+    scoreYouGot = 0;
+    numberOfChoice = level + 5;
+}
+
+async function terminate(){
+    let r =confirm("Do you want to terminate this game?");
+    if(r == true){
+        let name = await prompt("What is your name");
+        const url = '/game/score'
+        let userScore = {"name" : name,"score" : totalScore}
+        const setting = {
+            method: 'POST',
+            body: JSON.stringify(userScore),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        await fetch(url, setting);
+    }
+}
+
+function disableChoose(){
+    let boxes = document.getElementsByClassName('box');
+    for(let i = 0; i < Math.pow(4+level,2); i++){
+        boxes[i].removeAttribute("onclick")
+    }
+}
+function enableChoose(){
+    let boxes = document.getElementsByClassName('box');
+    for(let i = 0; i < Math.pow(4+level,2); i++){
+        boxes[i].setAttribute("onclick","choose("+i+");")
+    }
+}
+
+
+
 boxLocate();
+newGame();
 

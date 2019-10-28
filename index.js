@@ -29,9 +29,9 @@ app.get('/', function (req,res) {
     res.render('home');
 });
 
-app.use(gameRoutes);
+app.use('/game',gameRoutes);
 
-app.listen(3000, () => console.log('Server ready on 3000'))
+app.listen(process.env.PORT || 3000, () => console.log('Server ready on 3000'))
 
 
 

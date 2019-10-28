@@ -1,4 +1,6 @@
 #homePage {
+    background-color:blanchedalmond;
+    height:25px;
     text-align: center;
 }
 footer {
@@ -10,7 +12,4 @@ footer {
 }
 h1 {
     text-align: center;
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
 }

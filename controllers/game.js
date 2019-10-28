@@ -3,18 +3,18 @@ let gameModel = require('../models/gameData');
 
 exports.getBlocks = (req,res,next) => {
     let testData = gameModel.getall();
-    // console.log(testData);
-    res.render('blocks' ,{blockCSS: true});
+    // testData.then((data)=>{console.log(data[0][0].name)});
+    res.render('blocks', {blockCSS: true});
 };
 
-// exports.getAllPeople = (req,res,next) => {
-//    let Peoples = peopleModel.getall();
-   
-//    // Need to pass all peoples to the view using whats returned from
-//    // peopleModel.getall(), as of now an empty array is passed []
-//    res.render('peoples', { people: [], peoplesCSS: true });
-   
-// };
+exports.getScore = (req,res,next) => {
+    gameModel.add(res.req.body);
+    res.json('properly got it');
+};
+
+exports.end = (req,res,next) => {
+    res.redirect('/');
+};
 
 // exports.getAddPeople = (req,res,next) => {
 //     res.render('peopleadd' ,{formsCSS: true});

@@ -8,11 +8,16 @@
     padding: 0px; 
     margin: 0 auto;
 }
+.levelTwo{
+    grid-template-rows: repeat(6,50px);
+    grid-template-columns: repeat(6,50px);
+}
+
 .rotation {
     /* transition-property: transform; */
     transform : rotate(90deg);
     -webkit-transform: rotate(90deg);
-    transition-duration: 0.5s;
+    transition-duration: 1s;
     overflow: hidden;
 }
 
@@ -21,6 +26,7 @@
     transition: transform 0.3s;
     transform-style: preserve-3d;
 }
+
 .is-flipped {
     transform: rotateY(180deg);
 }
@@ -28,6 +34,10 @@
 .front{
     background-color: #bbb;
 }
+.front:hover{
+    background-color:  #ddd;
+}
+
 .back{
     background-color: orangered;
     transform: rotateY( 180deg );
@@ -40,4 +50,14 @@
     height:100%;
 }
 
+#scoreBoard {
+    margin-left:30%;
+    margin-right:30%;
+    display:flex;
+    justify-content: space-around;
+}
 
+#buttons{
+    display:flex;
+    justify-content: center;
+}

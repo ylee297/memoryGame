@@ -2,8 +2,8 @@ const express = require('express');
 const gameController = require('../controllers/game');
 const router = express.Router();
 
-router.get('/game', gameController.getBlocks);
-
-// router.get('/game/play', peopleController.getAddPeople);
+router.get('/', gameController.getBlocks);
+router.post('/score',gameController.getScore);
+router.get('/end',gameController.end);
 
 module.exports = router;
