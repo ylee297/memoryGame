@@ -2,6 +2,9 @@ let express = require('express')
 let app = express();
 let bodyParser = require('body-parser');
 let path = require('path');
+var MongoClient = require('mongodb').MongoClient;
+
+
 
 const expressHbs = require('express-handlebars');
 app.engine(
@@ -14,6 +17,7 @@ app.engine(
   );
   app.set('view engine', 'hbs');
   app.set('views', 'views');
+  
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false })) // middleware

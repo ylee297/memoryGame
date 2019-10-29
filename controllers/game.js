@@ -1,13 +1,19 @@
 let gameModel = require('../models/gameData');
 
 
-exports.getBlocks = (req,res,next) => {
-    let testData = gameModel.getall();
-    // testData.then((data)=>{console.log(data[0][0].name)});
+exports.gameStart = (req,res,next) =>{
     res.render('blocks', {blockCSS: true});
+}
+
+exports.getScores = async (req,res,next) => {
+    let rawData = gameModel.getall();
+    let userInfos;
+    await rawData.then((data)=> {userInfos = data})
+    console.log(userInfos);
+    res.render('leaderBoard', { users : userInfos,leaderboardCSS: true});    
 };
 
-exports.getScore = (req,res,next) => {
+exports.addScore = (req,res,next) => {
     gameModel.add(res.req.body);
     res.json('properly got it');
 };
@@ -15,6 +21,8 @@ exports.getScore = (req,res,next) => {
 exports.end = (req,res,next) => {
     res.redirect('/');
 };
+
+
 
 // exports.getAddPeople = (req,res,next) => {
 //     res.render('peopleadd' ,{formsCSS: true});

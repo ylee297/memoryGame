@@ -67,20 +67,18 @@ function flip(index){
 
 function choose(index){
     if(gameStart){
+        let boxes = document.getElementsByClassName('box');
+        boxes[index].removeAttribute("onclick")
         if(answer.indexOf(index) > -1){
             totalScore++;
             scoreYouGot++;
         } else {
             totalScore--;
         }
+
         if(totalScore < 0){
+            alert('You are loser')
             window.location.href="/"
-            // alert('You are loser')
-            // const url = '/game/end'
-            // const setting = {
-            //     method: 'GET',
-            // };
-            // fetch(url, setting);
             return;
         }
 
@@ -165,7 +163,7 @@ async function terminate(){
     let r =confirm("Do you want to terminate this game?");
     if(r == true){
         let name = await prompt("What is your name");
-        const url = '/game/score'
+        const url = '/game/recordscore'
         let userScore = {"name" : name,"score" : totalScore}
         const setting = {
             method: 'POST',

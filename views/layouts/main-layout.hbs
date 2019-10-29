@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ pageTitle }}</title>
-    <link href='/css/main.css' rel='stylesheet' />
-    <link 
+    <link href='/css/main.css' rel='stylesheet' /> 
     {{#if blockCSS}}
         <link href='/css/block.css' rel='stylesheet' />
+        <script src="/js/game.js" defer></script>
     {{/if}}
-    <script src="/js/game.js" defer></script>
+    {{#if leaderboardCSS}}
+        <link href='/css/leaderBoard.css' rel='stylesheet' />
+    {{/if}}
 </head>
 <body>
     <div id="gameScene">
